@@ -1,14 +1,14 @@
 import React from 'react'
 
-export default function Displblock() {
+export default function Displblock({currchat}) {
   return (
     <div class="displblock">
             <div class="displblocktop">
                 <div class="biginfo">
                     <img class="circular-img-main" src="./images/forest.jpg" />
                     <div class="inf">
-                        <span class="bigname">Killer228</span>
-                        <span class="whensee">last seen nore</span>
+                        <span class="bigname">{currchat.name}</span>
+                        <span class="whensee">{currchat.status}</span>
                     </div>
                 </div>
                 <div class="sett"></div>

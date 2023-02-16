@@ -1,7 +1,7 @@
 import React from 'react'
 import Chat from './Chat';
 
-export default function Chatsblock({chats}) {
+export default function Chatsblock({chats, setCurrchat}) {
   return (
     <div class="chatsblock"> 
             <div class="chatstopblock">
@@ -11,7 +11,7 @@ export default function Chatsblock({chats}) {
                 </div>
             </div>
             <div class="chatsbottomblock">
-                {chats.lenght}              
+                {chats.map(chat => <Chat key={chat.id} chat={chat} setCurrchat={setCurrchat}/>)}            
             </div>
         </div>
   )

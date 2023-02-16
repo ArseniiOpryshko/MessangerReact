@@ -50,7 +50,7 @@ body {
     margin: 0 20px 0 10px ;
     min-width: 40px;
     height: 20px;
-    background-image: url('./images/menuicon.png');
+    background-image: url('/public/images/menuicon.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size:contain;
@@ -82,6 +82,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: white;
+    padding-left: 5px;
 }
 
 .chatsbottomblock::-webkit-scrollbar {
@@ -98,25 +99,31 @@ body {
 .chat{
     width: 100%;
     height: 70px;
-    background-color: rgba(0, 0, 0, 0.042);
-    border-radius: 15px;
-    border-bottom: 0.2rem solid #fff;
-    transition: 0.2s;
-}
-.chat:hover{
-    background-color: rgba(0, 0, 0, 0.091);
+    /* margin-left: 2px; */
 }
 .chat-a{
-    display: block;
+    border: none;
+    border-radius: 7px;
     text-decoration: none;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
 
+    background-color: rgba(0, 0, 0, 0.042);
+    border-radius: 15px;
+    border-bottom: 0.2rem solid #fff;
+    transition: 0.1s;
 }
-.chat-a:focus{
-    color: black;
+.chat-a:hover{
+    background-color: rgba(0, 0, 0, 0.091);
+}
+.selected{
+    background-color: rgb(51,144,236);
+    color: #fff;
+}
+.selected:hover{
+    background-color: rgb(51,144,236);
 }
 .chatinnerflex{
     width: 100%;
@@ -208,7 +215,7 @@ body {
     height: 20px;
     background-position: center;
     background-size: cover  ;
-    background-image: url('./images/threedots.png');
+    background-image: url('/public/images/threedots.png');
     transform: rotate(90deg);
 }
 .messchatall{
@@ -237,7 +244,7 @@ body {
     left: 0;
     bottom: 0;
     right: 0;
-    background-image: url('./images/mainback.png');
+    background-image: url('/public/images/mainback.png');
     background-position: top right;
     background-size: 510px auto;
     background-repeat: repeat;
@@ -254,7 +261,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image:url('./images/back2.png');
+    background-image:url('/public/images/back2.png');
 }
 
 .message-own,
