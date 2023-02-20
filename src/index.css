@@ -322,12 +322,13 @@ body {
     font-size: 25px;
     position: absolute;
     right: 10%;
+    top:20px;
     border-radius: 60px;
     transition: 0.2s;
 }
-/* .sendbttn:hover{
-    background-color: #0000001b;
-} */
+.sendbttn:hover{
+    color: #0000007d;
+}
 .lasttext{
     max-height: 20px;
     overflow: hidden;
