@@ -88,10 +88,6 @@ body {
 .chatsbottomblock::-webkit-scrollbar {
     width: 8px;
 }
-/* .chatsbottomblock::-webkit-scrollbar-track {
-    background-color: rgb(210, 210, 210);
-    border-radius: 20px;
-} */
 .chatsbottomblock::-webkit-scrollbar-thumb{
     background-color: rgb(210, 210, 210);
     border-radius: 20px;
@@ -109,7 +105,7 @@ body {
     height: 100%;
     display: flex;
     align-items: center;
-
+    cursor: pointer;
     background-color: rgba(0, 0, 0, 0.042);
     border-radius: 15px;
     border-bottom: 0.2rem solid #fff;
@@ -123,6 +119,9 @@ body {
     color: #fff;
 }
 .selected:hover{
+    background-color: rgb(51,144,236);
+}
+.chat-a .selected:hover{
     background-color: rgb(51,144,236);
 }
 .chatinnerflex{
@@ -332,4 +331,119 @@ body {
 .lasttext{
     max-height: 20px;
     overflow: hidden;
+}
+.modalwindow{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    backdrop-filter: blur(4px); 
+}
+.loginblock{
+    width: 500px;
+    min-height: 450px;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.319);
+    display: flex;
+    flex-direction: column;
+}
+.loginblock h1{
+    font-size: 2rem;
+    line-height: 1.5;
+    text-align: center;
+    margin: 10px 0;
+    /* margin-bottom: 20p; */
+}
+.loginblock p{
+    text-align: center;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+.loginblock label{
+    display: block;
+    font-weight: bold;
+}
+.datainpit, .logbutt{
+    border: none;
+    outline: none;
+}
+.datainpit{
+    border: 1px solid rgb(218,220,224);
+    display: block;
+    width: 100%;
+    height: 3.375rem;
+    padding: 0 13px;
+    font-size: 16px;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+
+}
+.datainpit:hover{
+    border-color: #3390ec;
+}
+
+.logbutt{
+    margin: 0 auto;
+    display: block;
+    width: 60%;
+    height: 50px;
+    background-color: #0000001b;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+.logbutt:hover{
+    background-color: transparent;
+    box-shadow: 0 0 10px #3390ec;
+    color: #1b6ec1;
+}
+.input-wrapper {
+    position: relative;
+    margin: 20px 0;
+  }
+.input-wrapper label {
+    position: absolute;
+    top: -7px;
+    z-index: 1;
+    left: 10px;
+    background-color: white;
+    color: rgb(163, 166, 170);;
+    padding: 0 5px;
+    font-weight: 100;
+    font-size: 1rem;
+    transition: 0.15s ease-in-out;
+
+}
+.input-wrapper:hover label{
+    color: #3390ec;
+}
+
+.loginblock span{
+    color: rgb(51,144,236);
+    margin: 0 auto;
+    margin-top: 10px;
+    display: block;
+    text-align: center; 
+    width: 130px;
+}
+.loginblock span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.sel .datainpit{
+    border: 2px solid #3390ec;
+}
+.sel label{
+    color: #3390ec;
 }

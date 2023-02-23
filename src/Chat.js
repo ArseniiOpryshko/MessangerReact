@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Chat({chat, setCurrchat}) {
+export default function Chat({ user, chat, setCurrchat}) {
     function changeChat(e){
         document.querySelectorAll('.chat-a').forEach(elem=>{
             elem.classList.remove("selected");
@@ -11,24 +11,24 @@ export default function Chat({chat, setCurrchat}) {
 
     let names = "";
     chat.users.forEach(el => {
-        if(el.id!=2){
+        if(el.id!=user.id){
             names+=el.name+", "
         }
     });
     names = names.slice(0, names.length-2)
     
   return (
-    <div class="chat">
-        <button class="chat-a" onClick={changeChat}>
-            <img class="circular-img" src="./images/forest.jpg" />
-            <div class="chatinnerflex">
-                <div class="chattop">
-                    <span class="name">{names}</span>
-                    <span class="lasttime">{new Date(chat.lastTime).toLocaleDateString()}</span>
+    <div className="chat">
+        <button className="chat-a" onClick={changeChat}>
+            <img className="circular-img" src="./images/forest.jpg" />
+            <div className="chatinnerflex">
+                <div className="chattop">
+                    <span className="name">{names}</span>
+                    <span className="lasttime">{new Date(chat.lastTime).toLocaleDateString()}</span>
                 </div>
-                <div class="chatbottom">
-                    <span class="lasttext">{chat.lastMessage}</span>     
-                    <span class="newmess">{chat.notReaded}</span>                      
+                <div className="chatbottom">
+                    <span className="lasttext">{chat.lastMessage}</span>     
+                    <span className="newmess">{chat.notReaded}</span>                      
                 </div>
             </div>
         </button>

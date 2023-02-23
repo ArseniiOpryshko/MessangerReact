@@ -1,47 +1,47 @@
 import React from 'react'
 
-export default function Displblock({currchat, sendMessage}) {
+export default function Displblock({ user, currchat, sendMessage}) {
     const message = React.createRef();
     function send(){
         sendMessage(currchat.id, message.current.value);
     }
     if(currchat == null || typeof currchat == 'number'){
         return(
-            <div class="displblock">
-                <div class="displblocktop"></div>
-                <div class="messchat"></div>
+            <div className="displblock">
+                <div className="displblocktop"></div>
+                <div className="messchat"></div>
             </div>
         );
     }
 
-    let user = {};
+    let otherUser = {};
     currchat.users.forEach(el => {
-        if(el.id!=2){
-            user = el;
+        if(el.id!=user.id){
+            otherUser = el;
         }
     });
     
   return (
-    <div class="displblock">
-            <div class="displblocktop">
-                <div class="biginfo">
-                    <img class="circular-img-main" src="./images/forest.jpg" />
-                    <div class="inf">
-                        <span class="bigname">{user.name}</span>
-                        <span class="whensee">{user.status == true ? "online" : "offline" }</span>
+    <div className="displblock">
+            <div className="displblocktop">
+                <div className="biginfo">
+                    <img className="circular-img-main" src="./images/forest.jpg" />
+                    <div className="inf">
+                        <span className="bigname">{otherUser.name}</span>
+                        <span className="whensee">{otherUser.status == true ? "online" : "offline" }</span>
                     </div>
                 </div>
-                <div class="sett"></div>
+                <div className="sett"></div>
             </div>
-            <div class="messchat">
-                <div class="messchatall">
+            <div className="messchat">
+                <div className="messchatall">
                     {currchat.messages.map(el=> el.senderId!=1 ?
-                         <div key={el.id} class="message-other"><p>{el.content}</p></div> :
-                         <div key={el.id} class="message-own"><p>{el.content}</p></div>)}                  
+                         <div key={el.id} className="message-other"><p>{el.content}</p></div> :
+                         <div key={el.id} className="message-own"><p>{el.content}</p></div>)}                  
                 </div>
-                <div class="writeblock">
-                    <input ref={message} type="text" class="writem" placeholder="Message"></input>
-                    <input onClick={send} type="button" class="sendbttn" value="&#10148;"></input>
+                <div className="writeblock">
+                    <input ref={message} type="text" className="writem" placeholder="Message"></input>
+                    <input onClick={send} type="button" className="sendbttn" value="&#10148;"></input>
                 </div>
             </div>
         </div>

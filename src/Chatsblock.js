@@ -1,17 +1,17 @@
 import React from 'react'
 import Chat from './Chat';
 
-export default function Chatsblock({chats, setCurrchat}) {
+export default function Chatsblock({user, chats, setCurrchat}) {
   return (
-    <div class="chatsblock"> 
-            <div class="chatstopblock">
-                <div class="menu"></div>
-                <div class="search">
-                    <input type="text" name="nick" class="nick" placeholder="Search"></input>
+    <div className="chatsblock"> 
+            <div className="chatstopblock">
+                <div className="menu"></div>
+                <div className="search">
+                    <input type="text" name="nick" className="nick" placeholder="Search"></input>
                 </div>
             </div>
-            <div class="chatsbottomblock">
-                {chats.map(chat => <Chat key={chat.id} chat={chat} setCurrchat={setCurrchat}/>)}            
+            <div className="chatsbottomblock">
+                {chats.map(chat => <Chat key={chat.id} user={user} chat={chat} setCurrchat={setCurrchat}/>)}            
             </div>
         </div>
   )

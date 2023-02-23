@@ -2,41 +2,65 @@ import React, {useState, useEffect} from "react";
 import Chatsblock from "./Chatsblock";
 import Displblock from "./Displblock";
 import { HubConnectionBuilder } from '@microsoft/signalr';
-
+import jwt_decode from "jwt-decode";
+import ModalWindow from "./ModalWindow";
 function App() {
   const [chats, setChats] = useState([]);
   const [currchat, setCurrchat] = useState(null);
   const [connection, setConnection] = useState(null);
+  const [modalType, setModalType] = useState(null);
+
+  const [user, setUser] = useState(null);
+  
+  useEffect(()=>{
+    if (connection && user) {
+      connection.invoke("GetChats", user.id).catch((err) => console.error(err));
+    }
+  }, [user]);
+
+  // const logout = () => {
+  //   cookies.remove("jwt");
+  // }
+
+  function getJwt(){
+    if(localStorage.getItem("jwttoken") != null){
+      const token = localStorage.getItem("jwttoken");
+      const decoded = jwt_decode(token);
+      setUser({id: decoded.Id, name: decoded.Name, login: decoded.Login });
+    }
+  }
 
   useEffect(() => {
     const conn = new HubConnectionBuilder()
         .withUrl('https://localhost:7049/hubs/chat')
         .withAutomaticReconnect()
         .build();
-        
+
         setConnection(conn);     
   }, []);
-
+  
 useEffect(() => {
         if(connection){          
           connection.start().then(result => {                         
               console.log('Connected!'); 
-              connection.invoke("GetChats", 2).catch((err) => console.error(err)); // 1 - id usera 
 //connection.invoke("AddToGroup", "myGroup").catch((err) => console.error(err)); //myGroup поменять на groupId
-              connection.on('GetChats', getchats=>{  //при setCurrchat делать запрос к бд и получать информацию о текущем чате
+              connection.on('GetChats', getchats=>{ 
                   setChats(getchats)                 
               });
-
+              
               connection.on('ReceiveMessage', message => {
-                  
+                  console.log(message);
                   // const updatedMessages = [...currchat.messages];
                   // updatedMessages.push(message.content);
                   // currchat.messages = updatedMessages;
                   // // console.log(currchat);
-                  // setCurrchat(currchat);             
+                  // setCurrchat(currchat);
               });
           })
-          .catch(e => console.log('Connection failed: ', e));
+          .then(result=>{
+            getJwt();
+          });
+          //.catch(e => console.log('Connection failed: ', e));
         }     
 }, [connection]);
 
@@ -69,9 +93,10 @@ const sendMessage = async (chatId, content) => { //senderId, receiverId
 }
 
   return (
-    <div class="main-container">
-      <Chatsblock setCurrchat={setCurrchat} chats={chats}/>
-      <Displblock sendMessage={sendMessage} currchat={currchat}/>
+    <div className="main-container">
+      <ModalWindow getJwt={getJwt} connection={connection} modalType={modalType} setModalType={setModalType}/>
+      <Chatsblock user={user} setCurrchat={setCurrchat} chats={chats}/>
+      <Displblock user={user} sendMessage={sendMessage} currchat={currchat}/>
     </div>
   );
 }
