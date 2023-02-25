@@ -35,7 +35,7 @@ export default function Displblock({ user, currchat, sendMessage}) {
             </div>
             <div className="messchat">
                 <div className="messchatall">
-                    {currchat.messages.map(el=> el.senderId!=1 ?
+                    {currchat.messages.map(el=> el.senderId!=user.id ?
                          <div key={el.id} className="message-other"><p>{el.content}</p></div> :
                          <div key={el.id} className="message-own"><p>{el.content}</p></div>)}                  
                 </div>

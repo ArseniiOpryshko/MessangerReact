@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useCallback} from "react";
 import Chatsblock from "./Chatsblock";
 import Displblock from "./Displblock";
 import { HubConnectionBuilder } from '@microsoft/signalr';
@@ -9,93 +9,92 @@ function App() {
   const [currchat, setCurrchat] = useState(null);
   const [connection, setConnection] = useState(null);
   const [modalType, setModalType] = useState(null);
+  const [lastMessage, setLastMessage]  = useState(null);
+
 
   const [user, setUser] = useState(null);
   
-  useEffect(()=>{
-    if (connection && user) {
-      connection.invoke("GetChats", user.id).catch((err) => console.error(err));
-    }
-  }, [user]);
+  useEffect(() => {
+    getJwt();  
+  }, []);
 
   // const logout = () => {
   //   cookies.remove("jwt");
   // }
 
+  useEffect(()=>{
+    if(lastMessage!=null){
+      console.log(currchat);
+      currchat.messages.push(lastMessage)
+      console.log(currchat);
+    }
+  }, [lastMessage]);
+  
   function getJwt(){
-    if(localStorage.getItem("jwttoken") != null){
+    if(localStorage.getItem("jwttoken") != null){    
       const token = localStorage.getItem("jwttoken");
       const decoded = jwt_decode(token);
       setUser({id: decoded.Id, name: decoded.Name, login: decoded.Login });
+
+      const conn = new HubConnectionBuilder()
+      .withUrl(`https://localhost:7049/hubs/chat?userid=${decoded.Id}`)
+      .withAutomaticReconnect()
+      .build();
+
+      setConnection(conn);     
     }
   }
 
-  useEffect(() => {
-    const conn = new HubConnectionBuilder()
-        .withUrl('https://localhost:7049/hubs/chat')
-        .withAutomaticReconnect()
-        .build();
-
-        setConnection(conn);     
-  }, []);
-  
 useEffect(() => {
         if(connection){          
           connection.start().then(result => {                         
               console.log('Connected!'); 
-//connection.invoke("AddToGroup", "myGroup").catch((err) => console.error(err)); //myGroup поменять на groupId
+
+              connection.invoke("GetChats", user.id).catch((err) => console.error(err));    
               connection.on('GetChats', getchats=>{ 
-                  setChats(getchats)                 
+                  setChats(getchats)           
               });
-              
+
               connection.on('ReceiveMessage', message => {
-                  console.log(message);
-                  // const updatedMessages = [...currchat.messages];
-                  // updatedMessages.push(message.content);
-                  // currchat.messages = updatedMessages;
-                  // // console.log(currchat);
-                  // setCurrchat(currchat);
+                setLastMessage(message);  
               });
-          })
-          .then(result=>{
-            getJwt();
           });
-          //.catch(e => console.log('Connection failed: ', e));
         }     
 }, [connection]);
 
-useEffect(() => {
-  if(connection){          
-    connection.invoke("GetCurrentChat", currchat).catch((err) => console.error(err));
+
+function getChat(chatid) {
+  if(connection){         
+    connection.invoke("GetCurrentChat", chatid).catch((err) => console.error(err));
+    
     connection.on('CurrentChat', res=>{
       setCurrchat(res);
     });   
   }
-},[currchat]);
+}
 
-const sendMessage = async (chatId, content) => { //senderId, receiverId
+const sendMessage = (chatId, content) => { 
   const chatMessage = {
-      chatId: chatId,
-      content: content
-  };
-
+    Sender: user,
+    ChatId: chatId,
+    Content: content,
+    IsReaded: false
+};
   if (connection) {
       try {
-          await connection.send('SendMessage', chatMessage);
+         connection.send('SendMessage', chatMessage);
       }
       catch(e) {
           console.log(e);
       }
   }
-  else {
-      alert('No connection to server yet.');
-  }
 }
+
 
   return (
     <div className="main-container">
-      <ModalWindow getJwt={getJwt} connection={connection} modalType={modalType} setModalType={setModalType}/>
-      <Chatsblock user={user} setCurrchat={setCurrchat} chats={chats}/>
+      <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
+      <Chatsblock user={user} getChat={getChat} chats={chats}/>
       <Displblock user={user} sendMessage={sendMessage} currchat={currchat}/>
     </div>
   );

@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function Chat({ user, chat, setCurrchat}) {
+export default function Chat({ user, chat, getChat}) {
     function changeChat(e){
         document.querySelectorAll('.chat-a').forEach(elem=>{
             elem.classList.remove("selected");
         });
         e.currentTarget.classList.add("selected");
-        setCurrchat(chat.id);
+        getChat(chat.id);
     }
 
     let names = "";

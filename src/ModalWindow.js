@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 
-export default function ModalWindow({ getJwt, connection, modalType, setModalType }) {
+export default function ModalWindow({ getJwt, modalType, setModalType }) {
 
     const login = React.createRef(null);
     const name = React.createRef(null);
@@ -9,31 +9,51 @@ export default function ModalWindow({ getJwt, connection, modalType, setModalTyp
     const [hasError, setError] = useState(null);
 
 
-    const submitLog = ()=>{
-        connection.invoke("Login", login.current.value, password.current.value).catch((err) => console.error(err));
+    async function submitLog() {     
+        await fetch("https://localhost:7049/Account/Login",{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Login: login.current.value,
+                Password: password.current.value
+            })
+        })
+        .then(response => response.text())
+        .then(data=>{
+            CheckJwt(data);
+        });
     };
 
-    function submitReg() {
-        connection.invoke("Register", name.current.value, 
-            login.current.value, password.current.value).catch((err) => console.error(err));
+    async function submitReg() {
+            await fetch("https://localhost:7049/Account/Register",{
+                method: 'POST', 
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name.current.value,
+                    login: login.current.value,
+                    password: password.current.value
+                })
+            })
+            .then(response => response.text())
+            .then(data=>{
+                CheckJwt(data);
+            })
     }
       
-    useEffect(()=>{
-        if (connection) {
-            connection.on("JwtToken", jwt_token=>{
-                if (jwt_token) {
-                    localStorage.setItem("jwttoken", jwt_token);
-                    getJwt();
-                    setModalType("");
-                }
-                else{
-                    console.log("The entered data is incorrect or user doesn't exist");
-                    setError("The entered data is incorrect or user doesn't exist");
-                }
-                
-            }); 
+    function CheckJwt(jwt_token) {
+        if (jwt_token) {
+            localStorage.setItem("jwttoken", jwt_token);
+            getJwt();
+            setModalType("");
         }
-    }, [connection]);
+        else{
+            setError("The entered data is incorrect or user doesn't exist");
+        }
+    }
 
 
     let inputs = document.querySelectorAll(".input-wrapper");
@@ -46,15 +66,6 @@ export default function ModalWindow({ getJwt, connection, modalType, setModalTyp
         });
     });
 
-    
-    // const onBlurHandler = (refInput) => {
-    //     if (refInput.current?.value === "") {
-    //         setError(true);
-    //     }  
-    //     else{
-    //         setError(false);
-    //     }
-    // }
     
     if (localStorage.getItem("jwttoken") == null && modalType == null) {
       setModalType("log");
@@ -70,7 +81,6 @@ export default function ModalWindow({ getJwt, connection, modalType, setModalTyp
                     <div className="input-wrapper sel">
                         <label>Login</label>
                         <input ref={login} type="text" className="datainpit"></input> 
-                        {/* onBlur={onBlurHandler.bind(this, login)} */}
                     </div>
                     <div className="input-wrapper">
                         <label>Password</label>
