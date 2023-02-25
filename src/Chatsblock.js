@@ -1,7 +1,7 @@
 import React from 'react'
 import Chat from './Chat';
 
-export default function Chatsblock({user, chats, getChat}) {  
+export default function Chatsblock({user, chats, setCurrchatId}) {  
     function menuclick(){
         let punkts = document.querySelector('.punkts');
         if(punkts.classList.contains('showed')){
@@ -26,7 +26,7 @@ export default function Chatsblock({user, chats, getChat}) {
                 </div>
             </div>
             <div className="chatsbottomblock">
-                {chats.map(chat => <Chat key={chat.id} user={user} chat={chat} getChat={getChat}/>)}            
+                {chats.map(chat => <Chat key={Math.floor(Math.random() * 10000)} user={user} chat={chat} setCurrchatId={setCurrchatId}/>)}            
             </div>
         </div>
   )

@@ -6,11 +6,12 @@ import jwt_decode from "jwt-decode";
 import ModalWindow from "./ModalWindow";
 function App() {
   const [chats, setChats] = useState([]);
-  const [currchat, setCurrchat] = useState(null);
+  const [currchatId, setCurrchatId] = useState(null);
   const [connection, setConnection] = useState(null);
+  const [messages, setMessages] = useState(null);
   const [modalType, setModalType] = useState(null);
   const [lastMessage, setLastMessage]  = useState(null);
-
+  const [members, setMembers]  = useState(null);
 
   const [user, setUser] = useState(null);
   
@@ -21,12 +22,14 @@ function App() {
   // const logout = () => {
   //   cookies.remove("jwt");
   // }
-
   useEffect(()=>{
     if(lastMessage!=null){
-      console.log(currchat);
-      currchat.messages.push(lastMessage)
-      console.log(currchat);
+      console.log(messages);
+      // lastMessage.id = messages.length ;
+      setMessages(prev=>{
+        return [lastMessage, ...prev]
+      })
+      setChats(chats);
     }
   }, [lastMessage]);
   
@@ -62,21 +65,23 @@ useEffect(() => {
         }     
 }, [connection]);
 
-
-function getChat(chatid) {
+useEffect(()=>{
   if(connection){         
-    connection.invoke("GetCurrentChat", chatid).catch((err) => console.error(err));
+    connection.invoke("getChatMessages", currchatId).catch((err) => console.error(err));
     
-    connection.on('CurrentChat', res=>{
-      setCurrchat(res);
+    connection.on('CurrentChatMessages', res=>{
+      setMessages(res);
     });   
+    let mem = chats.find(e=>e.id == currchatId).users;
+    setMembers(mem);
   }
-}
+}, [currchatId]);
 
-const sendMessage = (chatId, content) => { 
+
+const sendMessage = (content) => { 
   const chatMessage = {
     Sender: user,
-    ChatId: chatId,
+    ChatId: currchatId,
     Content: content,
     IsReaded: false
 };
@@ -94,8 +99,8 @@ const sendMessage = (chatId, content) => {
   return (
     <div className="main-container">
       <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
-      <Chatsblock user={user} getChat={getChat} chats={chats}/>
-      <Displblock user={user} sendMessage={sendMessage} currchat={currchat}/>
+      <Chatsblock user={user} setCurrchatId={setCurrchatId} chats={chats}/>
+      <Displblock user={user} sendMessage={sendMessage} messages={messages} members={members}/>
     </div>
   );
 }

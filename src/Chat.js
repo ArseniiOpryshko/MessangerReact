@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function Chat({ user, chat, getChat}) {
+export default function Chat({ user, chat, setCurrchatId}) {
     function changeChat(e){
         document.querySelectorAll('.chat-a').forEach(elem=>{
             elem.classList.remove("selected");
         });
         e.currentTarget.classList.add("selected");
-        getChat(chat.id);
+        setCurrchatId(chat.id);
     }
 
     let names = "";
@@ -24,10 +24,10 @@ export default function Chat({ user, chat, getChat}) {
             <div className="chatinnerflex">
                 <div className="chattop">
                     <span className="name">{names}</span>
-                    <span className="lasttime">{new Date(chat.lastTime).toLocaleDateString()}</span>
+                    <span className="lasttime">{new Date(chat.messages[0].dispatchTime).toLocaleDateString()}</span>
                 </div>
                 <div className="chatbottom">
-                    <span className="lasttext">{chat.lastMessage}</span>     
+                    <span className="lasttext">{chat.messages[0].content}</span>     
                     <span className="newmess">{chat.notReaded}</span>                      
                 </div>
             </div>

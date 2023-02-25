@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function Displblock({ user, currchat, sendMessage}) {
+export default function Displblock({ user, messages, sendMessage, members}) {
+    const [otherUser, setOtherUser] = useState(null);
+    useEffect(()=>{
+        if (members) {
+            members.forEach(el => {
+                if(el.id!=user.id){
+                    setOtherUser(el);
+                }
+            });
+        }
+    }, [members]);
+
     const message = React.createRef();
     function send(){
-        sendMessage(currchat.id, message.current.value);
+        sendMessage(message.current.value);
     }
-    if(currchat == null || typeof currchat == 'number'){
+    if(messages == null){
         return(
             <div className="displblock">
                 <div className="displblocktop"></div>
@@ -14,12 +25,7 @@ export default function Displblock({ user, currchat, sendMessage}) {
         );
     }
 
-    let otherUser = {};
-    currchat.users.forEach(el => {
-        if(el.id!=user.id){
-            otherUser = el;
-        }
-    });
+
     
   return (
     <div className="displblock">
@@ -28,14 +34,14 @@ export default function Displblock({ user, currchat, sendMessage}) {
                     <img className="circular-img-main" src="./images/forest.jpg" />
                     <div className="inf">
                         <span className="bigname">{otherUser.name}</span>
-                        <span className="whensee">{otherUser.status == true ? "online" : "offline" }</span>
+                        <span className="whensee">{otherUser.status==true?"online":"offline"}</span>
                     </div>
                 </div>
                 <div className="sett"></div>
             </div>
             <div className="messchat">
                 <div className="messchatall">
-                    {currchat.messages.map(el=> el.senderId!=user.id ?
+                    {messages.map(el=> el.senderId!=user.id ?
                          <div key={el.id} className="message-other"><p>{el.content}</p></div> :
                          <div key={el.id} className="message-own"><p>{el.content}</p></div>)}                  
                 </div>
