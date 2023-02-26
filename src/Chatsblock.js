@@ -1,7 +1,28 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Chat from './Chat';
+import FoundUser from './FoundUser';
 
-export default function Chatsblock({user, chats, setCurrchatId}) {  
+export default function Chatsblock({user, chats, setCurrchatId, connection}) {  
+
+    const searchText = useRef(null);
+    const [foundUsers, setFoundUsers] = useState(null); 
+    useEffect(()=>{
+        if(connection){
+            connection.on("SearchResult", res=>{
+                setFoundUsers(res);
+                console.log(res)
+            });
+        } 
+    }, [connection]);
+
+    function onChangeSearch(){
+        if(connection){
+            connection.invoke("searchResult", searchText.current.value).catch((err) => console.error(err));
+            
+            
+        }
+    }
+
     function menuclick(){
         let punkts = document.querySelector('.punkts');
         if(punkts.classList.contains('showed')){
@@ -22,11 +43,13 @@ export default function Chatsblock({user, chats, setCurrchatId}) {
                     </ul>
                 </div>
                 <div className="search">
-                    <input type="text" name="nick" className="nick" placeholder="Search"></input>
+                    <input ref={searchText} onChange={onChangeSearch} type="text" name="nick" className="nick" placeholder="Search"></input>
                 </div>
             </div>
             <div className="chatsbottomblock">
-                {chats.map(chat => <Chat key={Math.floor(Math.random() * 10000)} user={user} chat={chat} setCurrchatId={setCurrchatId}/>)}            
+                { foundUsers != null ? "Global Search" : "Your chats"}
+                { foundUsers != null ? foundUsers.map(found => <FoundUser key={found.id} found={found} />) : 
+                chats.map(chat => <Chat key={chat.id} user={user} chat={chat} setCurrchatId={setCurrchatId}/>) }         
             </div>
         </div>
   )
