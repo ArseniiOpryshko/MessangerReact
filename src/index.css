@@ -30,7 +30,7 @@ body {
     width: 650px;
     display: flex;
     flex-direction: column;
-
+    position: relative;
     z-index: 0;
     border-right: 1px solid rgb(182, 182, 182);
 }
@@ -42,7 +42,7 @@ body {
     padding: 5px 10px;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     z-index: 0;
     /* border-bottom: 0.2rem solid #fff; */
 }
@@ -320,7 +320,7 @@ body {
     z-index: 1;
     position: relative;
     display: flex;
-    margin: 15px 0;
+    margin: 3px 0;
     width: 100%;
     /* max-width: 85%; */
 }
@@ -498,4 +498,183 @@ body {
 }
 .sel label{
     color: #3390ec;
+}
+.accountblock{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    right: -500px;
+    background-color: #fff;
+    z-index: 1;
+    border-right: 1px solid rgb(182, 182, 182);
+    transition: 0.2s;
+}
+.on{
+    right: 0px!important;
+}
+.accountblock .chatstopblock{
+    justify-content: space-between;
+}
+.imgblock{
+    width: 100%;
+    position: relative;
+}
+.imgblock img{
+    object-fit: cover;
+    height: 370px;
+    width: 100% ;
+}
+.databl{
+    height: 60px;
+    position: absolute;
+    bottom: 0;
+    margin-left: 20px;
+}
+.databl h3{
+    color: white;
+    font-weight: 500;
+    font-size: 1.25rem;
+    line-height: 1.375rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 0;
+}
+.databl p{
+    color: rgb(158, 158, 158);
+}
+.accountblock .chatstopblock{
+    font-weight: bolder;
+    font-size: 19px;
+}
+.back-btn{
+    width: 30px;
+    height: 32px;
+    padding: auto;
+    background-color: white;
+    border: none;
+    font-weight: bolder;
+    font-size: 19px;
+    transition: 0.2s;
+    border-radius: 50%;
+}
+.back-btn:hover{
+    background-color: rgb(213, 213, 213);
+}
+
+.listitems{
+    width: 100%;
+    /* margin-top: 10px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item{
+    padding: 0.5rem 1rem;
+    width: 100%;
+    height: 70px;
+    margin-bottom: 10px;
+    background-color: rgba(203, 203, 203, 0.337);
+    display: flex;
+    align-items: center
+
+}
+.item img{
+    width: 30px;
+    height: 30px;
+    margin-right: 40px;
+    filter: brightness(10);
+}
+.iteminner .status{
+    color: rgb(69, 69, 69);
+    font-size: 14px;
+}
+.iteminner h3{
+    font-weight: 500;
+}
+.edit{
+    height: 50px!important;
+    transition: 0.2s;
+}
+.edit:hover{
+    background-color: rgba(171, 171, 171, 0.337);
+    cursor: pointer;
+}
+
+.editlist{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 7px;
+}
+.editlist .input-wrapper{
+    width: 95%;
+}
+.imgselect{
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+.round{
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-image: url("/public/images/forest.jpg");
+    background-position: center;
+    background-size: 100% 100%;
+    position: relative;
+}
+.round input::file-selector-button{
+    visibility: hidden;
+    color: transparent;
+}
+.round input{
+    width: 100%;
+    height: 100%;
+    transform: scale(1);
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.264);
+}
+.round input:hover{
+    transform: scale(1.3);
+
+}
+.round input::before {
+    content: "";
+    width: 100%;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    height: 100%;
+    cursor: pointer;
+    background-image: url("/public/images/editimg.png");
+    background-size: 40%;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: invert(1);
+    z-index: 1;
+  }
+.editlist button{
+    border: none;
+    margin: 0 auto;
+    display: block;
+    width: 60%;
+    height: 40px;
+    background-color: #0000001b;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+.editlist button:hover{
+    background-color: #0000002f;
+    
 }

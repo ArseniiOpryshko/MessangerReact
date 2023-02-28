@@ -16,7 +16,9 @@ export default function Chat({ user, chat, setCurrchatId}) {
         }
     });
     names = names.slice(0, names.length-2)
-    
+
+    let date = new Date(chat.messages[0].dispatchTime);
+   
   return (
     <div className="chat">
         <button className="chat-a" onClick={changeChat}>
@@ -24,7 +26,7 @@ export default function Chat({ user, chat, setCurrchatId}) {
             <div className="chatinnerflex">
                 <div className="chattop">
                     <span className="name">{names}</span>
-                    <span className="lasttime">{new Date(chat.messages[0].dispatchTime).toLocaleDateString()}</span>
+                    <span className="lasttime">{ (new Date).toDateString()===date.toDateString() ? date.getHours()+":"+date.getMinutes() : date.toLocaleDateString() }</span>
                 </div>
                 <div className="chatbottom">
                     <span className="lasttext">{chat.messages[0].content}</span>     

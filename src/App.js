@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from "react";
-import Chatsblock from "./Chatsblock";
+import Chatsblock from "./LeftBlock/Chatsblock";
 import Displblock from "./Displblock";
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import jwt_decode from "jwt-decode";
@@ -19,13 +19,13 @@ function App() {
     getJwt();  
   }, []);
 
-  // const logout = () => {
-  //   cookies.remove("jwt");
-  // }
   useEffect(()=>{
     if(lastMessage!=null){
-      console.log(messages);
-      // lastMessage.id = messages.length ;
+      chats.forEach(el => {
+        if(el.id == lastMessage.chatId){
+          el.messages = [ lastMessage ] ;
+        }
+      });
       setMessages(prev=>{
         return [lastMessage, ...prev]
       })
@@ -60,6 +60,7 @@ useEffect(() => {
 
               connection.on('ReceiveMessage', message => {
                 setLastMessage(message);  
+          
               });
           });
         }     

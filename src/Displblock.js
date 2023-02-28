@@ -15,6 +15,7 @@ export default function Displblock({ user, messages, sendMessage, members}) {
     const message = React.createRef();
     function send(){
         sendMessage(message.current.value);
+        message.current.value = "";
     }
     if(messages == null){
         return(
