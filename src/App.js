@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from "react";
 import Chatsblock from "./LeftBlock/Chatsblock";
 import Displblock from "./Displblock";
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnectionBuilder, HttpTransportType  } from '@microsoft/signalr';
 import jwt_decode from "jwt-decode";
 import ModalWindow from "./ModalWindow";
 function App() {
@@ -13,7 +13,8 @@ function App() {
   const [lastMessage, setLastMessage]  = useState(null);
   const [members, setMembers]  = useState(null);
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); 
+
   
   useEffect(() => {
     getJwt();  

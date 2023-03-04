@@ -9,19 +9,30 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
     const searchText = useRef(null);
     const [foundUsers, setFoundUsers] = useState(null); 
     const [curPage, setCurPage] = useState(0);
-    
+    const [accountImage, setAccountImage] = useState(null);
+
+
+    function getImg(){
+        if(user && connection && connection._connectionState == 'Connected'){
+            connection.invoke("GetAccountImage", user.id).catch((err) => console.error(err));
+        } 
+    }
+
     useEffect(()=>{
         if(connection){
             connection.on("SearchResult", res=>{
                 setFoundUsers(res);
                 console.log(res)
             });
+            connection.on("Image", res=>{
+                setAccountImage(res);
+            });
         } 
     }, [connection]);
 
     function onChangeSearch(){
         if(connection){
-            connection.invoke("searchResult", searchText.current.value).catch((err) => console.error(err));
+            connection.invoke("searchResult", searchText.current.value, user.id).catch((err) => console.error(err));
         }
     }
 
@@ -42,13 +53,13 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
 
     return (
         <div className="chatsblock"> 
-                <Settings setCurPage={setCurPage} curPage={curPage}/>
-                <EditProfile setCurPage={setCurPage} curPage={curPage}/>
+                <Settings setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage}/>
+                <EditProfile setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage} getImg={getImg}/>
 
                 <div className="chatstopblock">               
                     <div className="menu" onClick={menuclick}>
                         <ul className="punkts">
-                            <li onClick={()=>{setCurPage(1)}} className="punkt"><img src="/images/account.jpg"></img><span>Details</span></li>
+                            <li onClick={()=>{setCurPage(1); getImg()}} className="punkt"><img src="/images/account.jpg"></img><span>Details</span></li>
                             <li onClick={logout} className="punkt"><img src="./images/logout.png"></img><span>Log out</span></li>
                         </ul>
                     </div>

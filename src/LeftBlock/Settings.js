@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
-export default function Settings({setCurPage, curPage}) {
+export default function Settings({setCurPage, curPage, user, accountImage}) {
+    
     useEffect(()=>{
         let a = document.querySelectorAll('.accountblock'); 
         if (curPage == 1) {
@@ -12,6 +13,10 @@ export default function Settings({setCurPage, curPage}) {
         
     }, [curPage])
 
+    useEffect(()=>{
+        document.querySelector(".accImg").src = "data:image/png;base64," + accountImage;
+    }, [accountImage])
+    
   return (
     <div className="accountblock">
         <div className="chatstopblock">
@@ -21,9 +26,9 @@ export default function Settings({setCurPage, curPage}) {
             <p>Settings</p>              
         </div>
         <div className="imgblock">
-            <img src="/images/forest.jpg" alt=""></img>
+            <img className='accImg' src="/images/forest.jpg" alt=""></img>
             <div className="databl">
-                <h3>Phantommm</h3>
+                <h3>{user!=null?user.name:""}</h3>
                 <p>online</p>
             </div>
         </div>
@@ -31,7 +36,7 @@ export default function Settings({setCurPage, curPage}) {
             <div className="item">
                 <img src="/images/email.png" alt=""></img>
                 <div className="iteminner">
-                    <h3>dfefefefe</h3>
+                    <h3>{user!=null?user.login:""}</h3>
                     <p className="status">Login</p>
                 </div>
             </div>
