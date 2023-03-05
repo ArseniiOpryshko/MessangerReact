@@ -62,7 +62,7 @@ useEffect(() => {
           connection.start().then(result => {                         
               console.log('Connected!'); 
 
-              connection.invoke("GetChats", user.id).catch((err) => console.error(err));    
+              connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));    
               connection.on('GetChats', getchats=>{ 
                   setChats(getchats)           
               });
@@ -134,6 +134,7 @@ const sendMessage = (content) => {
       <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
       <Chatsblock connection={connection} user={user} setCurrchatId={setCurrchatId} chats={chats} setUser={setUser}/>
       <Displblock chatdelete={chatdelete} user={user} sendMessage={sendMessage} messages={messages} members={members} />
+      <script src="path/to/global.js"></script>
     </div>
   );
 }

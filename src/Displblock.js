@@ -33,7 +33,7 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
     <div className="displblock">
             <div className="displblocktop">
                 <div className="biginfo">
-                    <img className="circular-img-main" src="./images/forest.jpg" />
+                    <img className="circular-img-main" src={"data:image/png;base64," + (otherUser!=null?otherUser.avatar:"") } />
                     <div className="inf">
                         <span className="bigname">{otherUser.name}</span>
                         <span className="whensee">{otherUser.status==true?"online":"offline"}</span>

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 export default function Chat({ user, chat, setCurrchatId}) {
 
     const [date, setDate] = useState(null);
+    const [otherUser, setOtherUser] = useState(null);
+
     function changeChat(e){
         document.querySelectorAll('.chat-a').forEach(elem=>{
             elem.classList.remove("selected");
@@ -11,13 +13,13 @@ export default function Chat({ user, chat, setCurrchatId}) {
         setCurrchatId(chat.id);
     }
 
-    let names = "";
-    chat.users.forEach(el => {
-        if(el.id!=user.id){
-            names+=el.name+", "
-        }
-    });
-    names = names.slice(0, names.length-2)
+    useEffect(()=>{
+        chat.users.forEach(el => {
+            if(el.id!=user.id){
+                setOtherUser(el)
+            }
+        });    
+    }, []);
 
     useEffect(()=>{
         if(chat){
@@ -32,14 +34,13 @@ export default function Chat({ user, chat, setCurrchatId}) {
         }
     }, [chat]);
 
-    console.log(chat)
   return (
     <div className="chat">
         <button className="chat-a" onClick={changeChat}>
-            <img className="circular-img" src="./images/forest.jpg" />
+            <img className="circular-img" src={"data:image/png;base64," + (otherUser!=null?otherUser.avatar:"") } />
             <div className="chatinnerflex">
                 <div className="chattop">
-                    <span className="name">{names}</span>
+                    <span className="name">{otherUser!=null?otherUser.name:""}</span>
                     <span className="lasttime">{ date }</span>
                 </div>
                 <div className="chatbottom">

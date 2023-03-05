@@ -31,7 +31,7 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
 
     function onChangeSearch(){
         if(connection){
-            connection.invoke("searchResult", searchText.current.value, user.id).catch((err) => console.error(err));
+            connection.invoke("searchResult", searchText.current.value, parseInt(user.id, 10)).catch((err) => console.error(err));
         }
     }
 
@@ -43,6 +43,7 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
         else{
             punkts.classList.add('showed')
         }
+
     }
     
     const logout = () => {
