@@ -25,7 +25,7 @@ export default function Chat({ user, chat, setCurrchatId}) {
         if(chat){
             
             if (chat.messages.length!=0) {
-                let d = new Date(chat.messages[0].dispatchTime);
+                let d = new Date(chat.messages[chat.messages.length-1].dispatchTime);
                 setDate((new Date).toDateString()===d.toDateString() ? d.getHours()+":"+d.getMinutes() : d.toLocaleDateString())
             }
             else{

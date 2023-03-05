@@ -74,6 +74,7 @@ export default function EditProfile({setCurPage, curPage, user, accountImage, ge
         const fff = event.target.files[0];
         const url = URL.createObjectURL(fff);
         setBack(url);
+        console.log(url)
       }
     
     return (

@@ -53,14 +53,25 @@ function App() {
       .withAutomaticReconnect()
       .build();
 
-      setConnection(conn);     
+      setConnection(conn);    
+
     }
   }
 
+  function onclose(){
+    if(user){
+      connection.invoke("Disconnect", parseInt(user.id, 10));
+    }    
+    
+  }
 useEffect(() => {
         if(connection){          
           connection.start().then(result => {                         
               console.log('Connected!'); 
+              window.addEventListener('beforeunload', ()=>{
+                onclose();
+              });
+              
 
               connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));    
               connection.on('GetChats', getchats=>{ 
@@ -77,7 +88,7 @@ useEffect(() => {
                   return [...prev, res]
                 });
 
-                setCurrchatId(res.id);
+                setCurrchatId(res.id);               
             })
           });
         }     
@@ -108,7 +119,7 @@ const sendMessage = (content) => {
     Content: content,
     IsReaded: false
   };
-
+  connection.invoke("DisconnectAsync", parseInt(user.id, 10));
   if (connection) {
       try {
          connection.send('SendMessage', chatMessage);
