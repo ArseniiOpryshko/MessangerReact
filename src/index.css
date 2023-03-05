@@ -261,12 +261,11 @@ body {
     justify-content: center;
 }
 .sett{
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     background-position: center;
     background-size: cover  ;
-    background-image: url('/public/images/threedots.png');
-    transform: rotate(90deg);
+    background-image: url('/public/images/delete.png');
     cursor: pointer;
 }
 .messchatall{

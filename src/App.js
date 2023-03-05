@@ -22,14 +22,22 @@ function App() {
 
   useEffect(()=>{
     if(lastMessage!=null){
+      console.log(chats)
+
       chats.forEach(el => {
         if(el.id == lastMessage.chatId){
           el.messages = [ lastMessage ] ;
+          el.dispatchTime = lastMessage.dispatchTime
         }
       });
-      setMessages(prev=>{
-        return [lastMessage, ...prev]
-      })
+      if(messages==null){
+        setMessages(lastMessage)
+      }
+      else{
+        setMessages(prev=>{
+          return [lastMessage, ...prev]
+        })
+      }
       setChats(chats);
     }
   }, [lastMessage]);
@@ -61,8 +69,16 @@ useEffect(() => {
 
               connection.on('ReceiveMessage', message => {
                 setLastMessage(message);  
-          
               });
+
+              connection.on('NewChatData', res=>{
+                console.log(res)
+                setChats(prev=>{
+                  return [...prev, res]
+                });
+
+                setCurrchatId(res.id);
+            })
           });
         }     
 }, [connection]);
@@ -74,8 +90,13 @@ useEffect(()=>{
     connection.on('CurrentChatMessages', res=>{
       setMessages(res);
     });   
-    let mem = chats.find(e=>e.id == currchatId).users;
-    setMembers(mem);
+
+    console.log(chats); console.log(currchatId);
+    if (chats.find(e=>e.id == currchatId)!=undefined) {
+      let mem = chats.find(e=>e.id == currchatId).users;
+      setMembers(mem);
+    }
+
   }
 }, [currchatId]);
 
@@ -86,7 +107,8 @@ const sendMessage = (content) => {
     ChatId: currchatId,
     Content: content,
     IsReaded: false
-};
+  };
+
   if (connection) {
       try {
          connection.send('SendMessage', chatMessage);
@@ -97,12 +119,21 @@ const sendMessage = (content) => {
   }
 }
 
+  function chatdelete() {
+    connection.invoke("DeleteChat", currchatId).catch((err) => console.error(err));
+    const index = chats.findIndex(obj => obj.id === currchatId);
+    if (index !== -1) {
+      chats.splice(index, 1);
+    }
+    setCurrchatId(null);
+    setMessages(null)
+  }
 
   return (
     <div className="main-container">
       <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
       <Chatsblock connection={connection} user={user} setCurrchatId={setCurrchatId} chats={chats}/>
-      <Displblock user={user} sendMessage={sendMessage} messages={messages} members={members}/>
+      <Displblock chatdelete={chatdelete} user={user} sendMessage={sendMessage} messages={messages} members={members} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Displblock({ user, messages, sendMessage, members}) {
+export default function Displblock({ user, messages, sendMessage, members, chatdelete}) {
     const [otherUser, setOtherUser] = useState(null);
     useEffect(()=>{
         if (members) {
@@ -15,9 +15,12 @@ export default function Displblock({ user, messages, sendMessage, members}) {
     const message = React.createRef();
     function send(){
         sendMessage(message.current.value);
+        
         message.current.value = "";
+        
     }
-    if(messages == null){
+
+    if(messages == null ){
         return(
             <div className="displblock">
                 <div className="displblocktop"></div>
@@ -26,8 +29,6 @@ export default function Displblock({ user, messages, sendMessage, members}) {
         );
     }
 
-
-    
   return (
     <div className="displblock">
             <div className="displblocktop">
@@ -38,7 +39,7 @@ export default function Displblock({ user, messages, sendMessage, members}) {
                         <span className="whensee">{otherUser.status==true?"online":"offline"}</span>
                     </div>
                 </div>
-                <div className="sett"></div>
+                <div onClick={chatdelete} className="sett"></div>
             </div>
             <div className="messchat">
                 <div className="messchatall">

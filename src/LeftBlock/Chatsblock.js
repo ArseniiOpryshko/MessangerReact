@@ -22,7 +22,6 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
         if(connection){
             connection.on("SearchResult", res=>{
                 setFoundUsers(res);
-                console.log(res)
             });
             connection.on("Image", res=>{
                 setAccountImage(res);
@@ -44,13 +43,17 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
         else{
             punkts.classList.add('showed')
         }
+
+        if (punkts.classList.contains('showed')) {
+            document.querySelector('.main-container').addEventListener('click', () => punkts.classList.remove('showed'), { once: true });
+        }
     }
     
     const logout = () => {
         localStorage.removeItem("jwttoken");
         window.location.reload()
     }
-
+    
     return (
         <div className="chatsblock"> 
                 <Settings setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage}/>
@@ -69,7 +72,8 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
                 </div>
                 <div className="chatsbottomblock">
                     { foundUsers != null ? "Global Search" : "Your chats"}
-                    { foundUsers != null ? foundUsers.map(found => <FoundUser key={found.id} found={found} />) : 
+                    { foundUsers != null ? 
+                    foundUsers.map(found => <FoundUser key={found.id} found={found} user={user} connection={connection} setFoundUsers={setFoundUsers}/>) : 
                     chats.map(chat => <Chat key={chat.id} user={user} chat={chat} setCurrchatId={setCurrchatId}/>) }         
                 </div>
             </div>
