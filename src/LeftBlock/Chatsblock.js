@@ -4,7 +4,7 @@ import EditProfile from './EditProfile';
 import FoundUser from './FoundUser';
 import Settings from './Settings';
 
-export default function Chatsblock({user, chats, setCurrchatId, connection}) {  
+export default function Chatsblock({user, chats, setCurrchatId, connection, setUser}) {  
 
     const searchText = useRef(null);
     const [foundUsers, setFoundUsers] = useState(null); 
@@ -43,10 +43,6 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
         else{
             punkts.classList.add('showed')
         }
-
-        if (punkts.classList.contains('showed')) {
-            document.querySelector('.main-container').addEventListener('click', () => punkts.classList.remove('showed'), { once: true });
-        }
     }
     
     const logout = () => {
@@ -57,12 +53,12 @@ export default function Chatsblock({user, chats, setCurrchatId, connection}) {
     return (
         <div className="chatsblock"> 
                 <Settings setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage}/>
-                <EditProfile setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage} getImg={getImg}/>
+                <EditProfile setCurPage={setCurPage} curPage={curPage} user={user} accountImage={accountImage} setUser={setUser} getImg={getImg}/>
 
                 <div className="chatstopblock">               
                     <div className="menu" onClick={menuclick}>
                         <ul className="punkts">
-                            <li onClick={()=>{setCurPage(1); getImg()}} className="punkt"><img src="/images/account.jpg"></img><span>Details</span></li>
+                            <li onClick={()=>{setCurPage(1); getImg(); }} className="punkt"><img src="/images/account.jpg"></img><span>Details</span></li>
                             <li onClick={logout} className="punkt"><img src="./images/logout.png"></img><span>Log out</span></li>
                         </ul>
                     </div>

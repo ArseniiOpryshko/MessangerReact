@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
+import jwt_decode from "jwt-decode";
 
-export default function EditProfile({setCurPage, curPage, user, accountImage, getImg}) {
+export default function EditProfile({setCurPage, curPage, user, accountImage, getImg, setUser}) {
 
     const name = useRef(null);
     const login = useRef(null);
@@ -47,7 +48,12 @@ export default function EditProfile({setCurPage, curPage, user, accountImage, ge
         .then(response => response.text())
         .then(jwt => {
             localStorage.setItem("jwttoken", jwt);
+
+            const decoded = jwt_decode(jwt);
+            setUser({id: decoded.Id, name: decoded.Name, login: decoded.Login });
+            
             getImg();
+            
             document.querySelector('.opStatus').style.display = 'block' ;
         })
         .catch(error => {

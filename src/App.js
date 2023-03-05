@@ -132,7 +132,7 @@ const sendMessage = (content) => {
   return (
     <div className="main-container">
       <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
-      <Chatsblock connection={connection} user={user} setCurrchatId={setCurrchatId} chats={chats}/>
+      <Chatsblock connection={connection} user={user} setCurrchatId={setCurrchatId} chats={chats} setUser={setUser}/>
       <Displblock chatdelete={chatdelete} user={user} sendMessage={sendMessage} messages={messages} members={members} />
     </div>
   );
