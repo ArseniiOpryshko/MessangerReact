@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import ContextMenu from './ContextMenu';
 
-export default function Displblock({ user, messages, sendMessage, members, chatdelete}) {
+export default function Displblock({ user, messages, sendMessage, members, chatdelete, connection}) {
     const [otherUser, setOtherUser] = useState(null);
     useEffect(()=>{
         if (members) {
@@ -36,21 +37,22 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
                     <img className="circular-img-main" src={"data:image/png;base64," + (otherUser!=null?otherUser.avatar:"") } />
                     <div className="inf">
                         <span className="bigname">{otherUser.name}</span>
-                        <span className="whensee">{otherUser.status==true?"online":"offline"}</span>
+                        {otherUser!=null && otherUser.status==true?
+                        <span className="whensee" style={{color:"rgb(51,144,236)"}}>online</span>
+                        :<span className="whensee" style={{color:"rgb(170,170,170)"}}>offline</span>}
+                        
+                        
                     </div>
                 </div>
                 <div onClick={chatdelete} className="sett"></div>
             </div>
             <div className="messchat">
-                <div className="messchatall">
-                    {messages.map(el=> el.senderId!=user.id ?
-                         <div key={el.id} className="message-other"><p>{el.content}</p></div> :
-                         <div key={el.id} className="message-own"><p>{el.content}</p></div>)}                  
-                </div>
+                <ContextMenu messages={messages} user={user} connection={connection}/>
                 <div className="writeblock">
                     <input ref={message} type="text" className="writem" placeholder="Message"></input>
                     <input onClick={send} type="button" className="sendbttn" value="&#10148;"></input>
                 </div>
+                
             </div>
         </div>
   )

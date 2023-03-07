@@ -14,7 +14,7 @@ function App() {
   const [members, setMembers]  = useState(null);
 
   const [user, setUser] = useState(null); 
-
+  const [delId, setDelId] = useState(null); 
   
   useEffect(() => {
     getJwt();  
@@ -22,14 +22,12 @@ function App() {
 
   useEffect(()=>{
     if(lastMessage!=null){
-      console.log(chats)
-
       chats.forEach(el => {
         if(el.id == lastMessage.chatId){
           el.messages = [ lastMessage ] ;
-          el.dispatchTime = lastMessage.dispatchTime
         }
       });
+
       if(messages==null){
         setMessages(lastMessage)
       }
@@ -61,37 +59,42 @@ function App() {
   function onclose(){
     if(user){
       connection.invoke("Disconnect", parseInt(user.id, 10));
-    }    
-    
+    }      
   }
+
 useEffect(() => {
-        if(connection){          
-          connection.start().then(result => {                         
+      if(connection){          
+            connection.start().then(result => {                         
               console.log('Connected!'); 
               window.addEventListener('beforeunload', ()=>{
                 onclose();
-              });
-              
-
-              connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));    
-              connection.on('GetChats', getchats=>{ 
-                  setChats(getchats)           
-              });
-
+              });             
+            
               connection.on('ReceiveMessage', message => {
                 setLastMessage(message);  
               });
 
               connection.on('NewChatData', res=>{
-                console.log(res)
+                setCurrchatId(res.id);   
                 setChats(prev=>{
                   return [...prev, res]
                 });
+              });
 
-                setCurrchatId(res.id);               
+              connection.on('DeleteId', id => {
+                setDelId(id);
+              });             
+
+              connection.on('GetChats', getchats=>{ 
+                setChats(getchats);  
+              });
+
+                
             })
-          });
-        }     
+            .then(()=>{
+              connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));
+            });
+      }                     
 }, [connection]);
 
 useEffect(()=>{
@@ -102,7 +105,6 @@ useEffect(()=>{
       setMessages(res);
     });   
 
-    console.log(chats); console.log(currchatId);
     if (chats.find(e=>e.id == currchatId)!=undefined) {
       let mem = chats.find(e=>e.id == currchatId).users;
       setMembers(mem);
@@ -111,15 +113,18 @@ useEffect(()=>{
   }
 }, [currchatId]);
 
-
 const sendMessage = (content) => { 
+  window.removeEventListener('beforeunload', ()=>{
+    onclose();
+  });
+
   const chatMessage = {
     Sender: user,
     ChatId: currchatId,
     Content: content,
     IsReaded: false
   };
-  connection.invoke("DisconnectAsync", parseInt(user.id, 10));
+
   if (connection) {
       try {
          connection.send('SendMessage', chatMessage);
@@ -128,7 +133,20 @@ const sendMessage = (content) => {
           console.log(e);
       }
   }
+
+  window.addEventListener('beforeunload', ()=>{
+    onclose();
+  });
 }
+
+  useEffect(()=>{
+    if (messages) {
+      let editedM = messages.filter(item => item.id !== delId)
+      setMessages(editedM);
+      setLastMessage(messages[messages.lenght])
+    }
+  }, [delId])
+
 
   function chatdelete() {
     connection.invoke("DeleteChat", currchatId).catch((err) => console.error(err));
@@ -144,8 +162,7 @@ const sendMessage = (content) => {
     <div className="main-container">
       <ModalWindow getJwt={getJwt} modalType={modalType} setModalType={setModalType}/>
       <Chatsblock connection={connection} user={user} setCurrchatId={setCurrchatId} chats={chats} setUser={setUser}/>
-      <Displblock chatdelete={chatdelete} user={user} sendMessage={sendMessage} messages={messages} members={members} />
-      <script src="path/to/global.js"></script>
+      <Displblock connection={connection} chatdelete={chatdelete} user={user} sendMessage={sendMessage} messages={messages} members={members} />
     </div>
   );
 }

@@ -159,6 +159,7 @@ body {
     border-radius: 15px;
     border-bottom: 0.2rem solid #fff;
     transition: 0.1s;
+    position: relative;
 }
 .chat-a:hover{
     background-color: rgba(0, 0, 0, 0.091);
@@ -689,4 +690,49 @@ body {
 .opStatus{
     margin-top: 5px;
     display: none;
+}
+
+
+.context_menu{
+    position: fixed;
+   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+   z-index: 9999;
+
+    border-radius: 10px;
+    background-color: rgba(255,255,255,0.733333);;
+    backdrop-filter: blur(10px);
+   font-size: 20px;
+   width: 150px;
+}
+
+
+.context-block{
+    list-style: none;
+   width: 100%;
+   
+}
+
+
+.context-block li{
+    margin: 5px;
+    padding: 2px 5px;
+    
+}
+
+
+
+.context-block li:hover{
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: rgba(214, 214, 214, 0.733);;
+}
+.greendot{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background-color: rgb(63, 238, 63);
+    position: absolute;
+    left: 50px;
+    top: 45px;
 }
