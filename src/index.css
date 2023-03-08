@@ -58,6 +58,7 @@ body {
     background-repeat: no-repeat;
     background-size:contain;
     cursor: pointer;
+    /* z-index: 2; */
 }
 .showed{
     display: block!important;
@@ -135,7 +136,7 @@ body {
 } 
 .chat{
     width: 100%;
-    height: 70px;
+    height: 80px;
     /* margin-left: 2px; */
 }
 .found{
@@ -146,6 +147,8 @@ body {
 }
 .chat-a{
     background-color: rgba(0, 0, 0, 0.042);
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .found , .chat-a{
     border: none;
@@ -198,6 +201,7 @@ body {
     display: flex;
     justify-content: space-between;
     font-size: 19px;
+    max-width: 280px;
 }
 .lasttime, .newmess{
     font-size: 14px;
@@ -327,7 +331,6 @@ body {
     display: flex;
     margin: 3px 0;
     width: 100%;
-    /* max-width: 85%; */
 }
 
 .message-own {
@@ -343,6 +346,9 @@ body {
     border-radius: 10px;
     max-width: 70%;
     word-wrap: break-word;
+    border-bottom-right-radius: 0px;
+    position: relative;
+    padding-right: 50px;
 }
 .message-other p {
     background-color: white;
@@ -350,7 +356,25 @@ body {
     border-radius: 10px;
     max-width: 70%;
     word-wrap: break-word;
+    border-bottom-left-radius: 0px;
+    position: relative;
+    padding-right: 50px;
 }
+.timeMark{
+    font-size: 12px;
+    position: absolute;
+    bottom: 3px;
+    right: 10px;
+    display: block;
+}
+.message-other p .timeMark{
+    color: rgba(104, 108, 114, 0.75);   
+}
+
+.message-own p .timeMark{
+    color: rgba(79,174,78,1);   
+}
+
 .writeblock{
     z-index: 1;
     height: 100px;
@@ -735,4 +759,15 @@ body {
     position: absolute;
     left: 50px;
     top: 45px;
+}
+
+.dateMark{
+    background-color: rgba(0, 0, 0, 0.23);
+    color:white;
+    width: 80px;
+    padding: 3px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 5px auto;
+    font-size: 15px;
 }

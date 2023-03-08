@@ -14,7 +14,7 @@ function App() {
   const [members, setMembers]  = useState(null);
 
   const [user, setUser] = useState(null); 
-  const [delId, setDelId] = useState(null); 
+  const [method, setMethod] = useState(null); 
   
   useEffect(() => {
     getJwt();  
@@ -82,14 +82,25 @@ useEffect(() => {
               });
 
               connection.on('DeleteId', id => {
-                setDelId(id);
+                setMethod({id: id, case: "delete"});
               });             
 
               connection.on('GetChats', getchats=>{ 
                 setChats(getchats);  
               });
 
-                
+              connection.on('UserDisconnect', id => {
+                setMethod({id: id, case: "workWithConn"});
+              });    
+
+              connection.on('UserConnect', id => {
+                setMethod({id: id, case: "workWithConn"}); 
+              });    
+
+              connection.on('OnEditMessage', res => {
+                setMethod({obj: res, case: "editMessage"});
+              }); 
+
             })
             .then(()=>{
               connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));
@@ -113,15 +124,16 @@ useEffect(()=>{
   }
 }, [currchatId]);
 
-const sendMessage = (content) => { 
+const sendMessage = (data) => { 
   window.removeEventListener('beforeunload', ()=>{
     onclose();
   });
 
   const chatMessage = {
+    Id: data.id,
     Sender: user,
     ChatId: currchatId,
-    Content: content,
+    Content: data.content,
     IsReaded: false
   };
 
@@ -140,12 +152,35 @@ const sendMessage = (content) => {
 }
 
   useEffect(()=>{
-    if (messages) {
-      let editedM = messages.filter(item => item.id !== delId)
+    if (method === null) {
+      return;
+    }
+
+    if (method.case === "delete") {
+      let editedM = messages.filter(item => item.id !== method.id)
       setMessages(editedM);
       setLastMessage(messages[messages.lenght])
     }
-  }, [delId])
+    else if(method.case === "workWithConn"){  
+      let editedchat = [...chats];
+      editedchat.forEach(chat => {
+        chat.users.forEach(user => {
+          if (user.id === method.id) {
+            user.status = !user.status;
+          }
+        });
+      });
+      setChats(editedchat);
+    }
+    else if (method.case === "editMessage") {
+      const newArray = [...messages];
+      const index = newArray.findIndex((item) => item.id === method.obj.id);
+      newArray[index] = { ...newArray[index], content: method.obj.content };
+
+      setMessages(newArray);
+      setLastMessage(messages[messages.lenght])
+    }
+  }, [method])
 
 
   function chatdelete() {

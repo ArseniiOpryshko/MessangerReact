@@ -3,6 +3,8 @@ import ContextMenu from './ContextMenu';
 
 export default function Displblock({ user, messages, sendMessage, members, chatdelete, connection}) {
     const [otherUser, setOtherUser] = useState(null);
+    const [messId, setMessId] = useState(null);
+
     useEffect(()=>{
         if (members) {
             members.forEach(el => {
@@ -14,11 +16,16 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
     }, [members]);
 
     const message = React.createRef();
+
     function send(){
-        sendMessage(message.current.value);
+        const data = {
+            id: messId,
+            content: message.current.value
+        }
+        sendMessage(data);
+        setMessId(null);
         
         message.current.value = "";
-        
     }
 
     if(messages == null ){
@@ -47,7 +54,7 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
                 <div onClick={chatdelete} className="sett"></div>
             </div>
             <div className="messchat">
-                <ContextMenu messages={messages} user={user} connection={connection}/>
+                <ContextMenu setMessId={setMessId} message={message} messages={messages} user={user} connection={connection}/>
                 <div className="writeblock">
                     <input ref={message} type="text" className="writem" placeholder="Message"></input>
                     <input onClick={send} type="button" className="sendbttn" value="&#10148;"></input>
