@@ -54,11 +54,15 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
                 <div onClick={chatdelete} className="sett"></div>
             </div>
             <div className="messchat">
-                <ContextMenu setMessId={setMessId} message={message} messages={messages} user={user} connection={connection}/>
-                <div className="writeblock">
-                    <input ref={message} type="text" className="writem" placeholder="Message"></input>
-                    <input onClick={send} type="button" className="sendbttn" value="&#10148;"></input>
-                </div>
+                {Array.isArray(messages) ? 
+                <>
+                    <ContextMenu setMessId={setMessId} message={message} messages={messages} user={user} connection={connection}/>
+                    <div className="writeblock">
+                        <input ref={message} type="text" className="writem" placeholder="Message"></input>
+                        <input onClick={send} type="button" className="sendbttn" value="&#10148;"></input>
+                    </div>
+                </> : ""}
+                
                 
             </div>
         </div>

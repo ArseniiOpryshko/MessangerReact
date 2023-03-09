@@ -35,7 +35,6 @@ export default function ContextMenu({ setMessId, message, connection, messages, 
     function addZero(time) {
         return (time).toString().padStart(2, '0');
     }
-
     return (
       <>
         <div className="messchatall">

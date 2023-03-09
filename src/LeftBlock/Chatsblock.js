@@ -4,7 +4,7 @@ import EditProfile from './EditProfile';
 import FoundUser from './FoundUser';
 import Settings from './Settings';
 
-export default function Chatsblock({user, chats, setCurrchatId, connection, setUser}) {  
+export default function Chatsblock({user, chats, setCurrchatId, connection, setUser, currchatId}) {  
 
     const searchText = useRef(null);
     const [foundUsers, setFoundUsers] = useState(null); 
@@ -67,7 +67,7 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
                     { foundUsers != null ? "Global Search" : "Your chats"}
                     { foundUsers != null ? 
                     foundUsers.map(found => <FoundUser key={found.id} found={found} user={user} connection={connection} setFoundUsers={setFoundUsers}/>) : 
-                    chats.map(chat => <Chat key={chat.id} user={user} chat={chat} setCurrchatId={setCurrchatId}/>) }         
+                    chats.map(chat => <Chat connection={connection} key={chat.id} user={user} chat={chat} setCurrchatId={setCurrchatId} currchatId={currchatId}/>) }         
                 </div>
             </div>
       )
