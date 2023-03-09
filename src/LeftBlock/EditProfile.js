@@ -47,14 +47,24 @@ export default function EditProfile({setCurPage, curPage, user, accountImage, ge
         })
         .then(response => response.text())
         .then(jwt => {
-            localStorage.setItem("jwttoken", jwt);
-
-            const decoded = jwt_decode(jwt);
-            setUser({id: decoded.Id, name: decoded.Name, login: decoded.Login });
+            let stat = document.querySelector('.opStatus');
             
-            getImg();
-            
-            document.querySelector('.opStatus').style.display = 'block' ;
+            if (jwt!== '') {
+                localStorage.setItem("jwttoken", jwt);
+                const decoded = jwt_decode(jwt);
+                setUser({id: decoded.Id, name: decoded.Name, login: decoded.Login });                
+                getImg();
+             
+                stat.style.display = 'block' ;
+                stat.style.color = 'rgb(18, 225, 18)';
+                stat.innerHTML="data successfully changed";
+            }
+            else{
+                stat.style.display = 'block' ;
+                stat.style.color = 'red';
+                stat.innerHTML="User with this login already exists";
+                
+            }
         })
         .catch(error => {
           console.error(error);
@@ -74,7 +84,6 @@ export default function EditProfile({setCurPage, curPage, user, accountImage, ge
         const fff = event.target.files[0];
         const url = URL.createObjectURL(fff);
         setBack(url);
-        console.log(url)
       }
     
     return (
@@ -100,7 +109,7 @@ export default function EditProfile({setCurPage, curPage, user, accountImage, ge
                         <input ref={login} name="login" type="text" className="datainpit" required></input>
                     </div>
                     <button onClick={submitChanges}>Confirm changes</button> 
-                    <span className='opStatus' style={{ color: 'rgb(18, 225, 18)' }}>data changed</span>    
+                    <span className='opStatus'></span>    
                 </div>
             </div>
         

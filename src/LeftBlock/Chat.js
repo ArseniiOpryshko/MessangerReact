@@ -25,8 +25,13 @@ export default function Chat({ user, chat, setCurrchatId, currchatId, connection
                 setOtherUser(el)
             }
         });    
-        console.log(typeof user.id);
-        setUnreadedCount((chat.messages.filter(e => e.isReaded === false && e.sender.id!=parseInt(user.id, 10))).length-1);
+        if(chat.messages.length <= 0){
+            setUnreadedCount(0);
+        }
+        else{
+            setUnreadedCount((chat.messages.filter(e => e.isReaded === false && e.sender.id!=parseInt(user.id, 10))).length-1);
+        }
+        
     }, []);
 
     useEffect(()=>{
@@ -58,6 +63,10 @@ export default function Chat({ user, chat, setCurrchatId, currchatId, connection
 
         if(currchatId!=chat.id){
             setUnreadedCount(prev=>prev+1)
+        }
+        else{
+            console.log(chat.messages[chat.messages.length-1].id)
+            connection.invoke('ReadLastMessage', chat.messages[chat.messages.length-1].id);
         }
         
     }, [chat.messages]);

@@ -129,6 +129,7 @@ useEffect(()=>{
 }, [currchatId]);
 
 const sendMessage = (data) => { 
+
   window.removeEventListener('beforeunload', ()=>{
     onclose();
   });
@@ -141,7 +142,7 @@ const sendMessage = (data) => {
     IsReaded: false
   };
 
-  if (connection) {
+  if (connection && data.content!=' ' && data.content.length > 0) {
       try {
          connection.send('SendMessage', chatMessage);
       }
@@ -161,9 +162,11 @@ const sendMessage = (data) => {
     }
 
     if (method.case === "delete") {
-      let editedM = messages.filter(item => item.id !== method.id)
-      setMessages(editedM);
-      setLastMessage(messages[messages.lenght])
+      if(messages!=null){
+        let editedM = messages.filter(item => item.id !== method.id)
+        setMessages(editedM);
+        setLastMessage(messages[messages.lenght])
+      }
     }
     else if(method.case === "workWithConn"){  
       let editedchat = [...chats];
@@ -177,12 +180,15 @@ const sendMessage = (data) => {
       setChats(editedchat);
     }
     else if (method.case === "editMessage") {
-      const newArray = [...messages];
-      const index = newArray.findIndex((item) => item.id === method.obj.id);
-      newArray[index] = { ...newArray[index], content: method.obj.content };
+      console.log(messages);
+      if(messages!=null){
+        const newArray = [...messages];
+        const index = newArray.findIndex((item) => item.id === method.obj.id);
+        newArray[index] = { ...newArray[index], content: method.obj.content };
 
-      setMessages(newArray);
-      setLastMessage(messages[messages.lenght])
+        setMessages(newArray);
+        setLastMessage(messages[messages.lenght])
+      }
     }
     else if(method.case === "deleteChat"){
       const index = chats.findIndex(obj => obj.id === method.id);

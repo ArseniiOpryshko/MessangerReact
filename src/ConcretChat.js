@@ -1,12 +1,10 @@
 import React, { useState, useRef } from 'react'
 
-export default function ContextMenu({ setMessId, message, connection, messages, user}) {
+export default function ConcretChat({ setMessId, message, connection, messages, user}) {
     const [isVisible, setIsVisible] = useState(false);
     const [x, setX] = useState(0);
     const [y, setY] = useState(0);
     const [currItem, setCurrItem] = useState(0);
-    const lastDate = useRef(null);
-    let dateblock = useRef();
 
     function handleContextMenu(event, item) {
         event.preventDefault();
