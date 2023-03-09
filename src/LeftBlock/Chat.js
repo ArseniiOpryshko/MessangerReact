@@ -23,13 +23,26 @@ export default function Chat({ user, chat, setCurrchatId}) {
 
     useEffect(()=>{
         if(chat){
-            
-            if (chat.messages.length!=0) {
-                let d = new Date(chat.messages[chat.messages.length-1].dispatchTime);
-                setDate((new Date).toDateString()===d.toDateString() ? d.getHours()+":"+d.getMinutes().toString().padStart(2, '0') : d.toLocaleDateString())
-            }
-            else{
-                setDate("");
+
+            const lastMessDate = new Date(chat.messages[chat.messages.length-1].dispatchTime);
+            const today = new Date();
+
+            if (lastMessDate.getDate() === today.getDate()) {
+                setDate(
+                lastMessDate.getHours().toString() +
+                    ':' +
+                    lastMessDate.getMinutes().toString().padStart(2, '0')
+                );
+            } else if (
+                Math.floor((today - lastMessDate) / (1000 * 60 * 60 * 24)) >= 7
+            ) {
+                const options = { day: 'numeric', month: 'short' };
+                const dateStr = lastMessDate.toLocaleDateString(undefined, options);
+                setDate(dateStr);
+            } else {
+                const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                const dayName = days[lastMessDate.getDay()];
+                setDate(dayName);
             }
         }
     }, [chat.messages]);

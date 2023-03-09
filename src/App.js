@@ -75,13 +75,14 @@ useEffect(() => {
               });
 
               connection.on('NewChatData', res=>{
+                console.log(res)
                 setCurrchatId(res.id);   
                 setChats(prev=>{
                   return [...prev, res]
                 });
               });
 
-              connection.on('DeleteId', id => {
+              connection.on('OnDeleteMessage', id => {
                 setMethod({id: id, case: "delete"});
               });             
 
@@ -101,6 +102,9 @@ useEffect(() => {
                 setMethod({obj: res, case: "editMessage"});
               }); 
 
+              connection.on('ChatDeleted', id => {
+                setMethod({id: id, case: "deleteChat"});
+              }); 
             })
             .then(()=>{
               connection.invoke("GetChats", parseInt(user.id, 10)).catch((err) => console.error(err));
@@ -180,17 +184,21 @@ const sendMessage = (data) => {
       setMessages(newArray);
       setLastMessage(messages[messages.lenght])
     }
+    else if(method.case === "deleteChat"){
+      const index = chats.findIndex(obj => obj.id === method.id);
+      const edited = [...chats]; 
+      if (index !== -1) {
+        edited.splice(index, 1);
+        setChats(edited); 
+        setCurrchatId(null);
+        setMessages(null);
+      }
+    }
   }, [method])
 
 
   function chatdelete() {
     connection.invoke("DeleteChat", currchatId).catch((err) => console.error(err));
-    const index = chats.findIndex(obj => obj.id === currchatId);
-    if (index !== -1) {
-      chats.splice(index, 1);
-    }
-    setCurrchatId(null);
-    setMessages(null)
   }
 
   return (

@@ -10,7 +10,7 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
     const [foundUsers, setFoundUsers] = useState(null); 
     const [curPage, setCurPage] = useState(0);
     const [accountImage, setAccountImage] = useState(null);
-
+    const [isVisible, setIsVisible] = useState(null);
 
     function getImg(){
         if(user && connection && connection._connectionState == 'Connected'){
@@ -36,14 +36,7 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
     }
 
     function menuclick(){
-        let punkts = document.querySelector('.punkts');
-        if(punkts.classList.contains('showed')){
-            punkts.classList.remove('showed')
-        }
-        else{
-            punkts.classList.add('showed')
-        }
-
+        setIsVisible(!isVisible);
     }
     
     const logout = () => {
@@ -58,10 +51,13 @@ export default function Chatsblock({user, chats, setCurrchatId, connection, setU
 
                 <div className="chatstopblock">               
                     <div className="menu" onClick={menuclick}>
-                        <ul className="punkts">
+                        {isVisible &&
+                        <ul className="punkts showed">
                             <li onClick={()=>{setCurPage(1); getImg(); }} className="punkt"><img src="/images/account.jpg"></img><span>Details</span></li>
                             <li onClick={logout} className="punkt"><img src="./images/logout.png"></img><span>Log out</span></li>
                         </ul>
+                        }
+                        
                     </div>
                     <div className="search">
                         <input ref={searchText} onChange={onChangeSearch} type="text" name="nick" className="nick" placeholder="Search"></input>

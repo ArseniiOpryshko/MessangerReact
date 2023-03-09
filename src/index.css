@@ -58,7 +58,6 @@ body {
     background-repeat: no-repeat;
     background-size:contain;
     cursor: pointer;
-    /* z-index: 2; */
 }
 .showed{
     display: block!important;
@@ -125,6 +124,7 @@ body {
     height: 100%;
     background-color: white;
     padding-left: 5px;
+    z-index: -1;
 }
 
 .chatsbottomblock::-webkit-scrollbar {
@@ -758,7 +758,7 @@ body {
     background-color: rgb(63, 238, 63);
     position: absolute;
     left: 50px;
-    top: 45px;
+    top: 50px;
 }
 
 .dateMark{

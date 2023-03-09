@@ -24,7 +24,7 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
         }
         sendMessage(data);
         setMessId(null);
-        
+
         message.current.value = "";
     }
 
@@ -43,7 +43,7 @@ export default function Displblock({ user, messages, sendMessage, members, chatd
                 <div className="biginfo">
                     <img className="circular-img-main" src={"data:image/png;base64," + (otherUser!=null?otherUser.avatar:"") } />
                     <div className="inf">
-                        <span className="bigname">{otherUser.name}</span>
+                        <span className="bigname">{otherUser?otherUser.name:""}</span>
                         {otherUser!=null && otherUser.status==true?
                         <span className="whensee" style={{color:"rgb(51,144,236)"}}>online</span>
                         :<span className="whensee" style={{color:"rgb(170,170,170)"}}>offline</span>}

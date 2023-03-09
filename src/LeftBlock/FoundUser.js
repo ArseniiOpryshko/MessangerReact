@@ -10,7 +10,7 @@ export default function FoundUser({found, connection, user, setFoundUsers}) {
   return (
     <div className="chat" onClick={createChat}>
         <button className="found" >
-            <img className="circular-img" src="./images/forest.jpg" />
+            <img className="circular-img" src={"data:image/png;base64," + found.avatar } />
             <div className="chatinnerflex">
                 <div className="chattop">
                     <span className="name">{found.name}</span>
