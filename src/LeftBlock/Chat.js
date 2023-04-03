@@ -64,8 +64,7 @@ export default function Chat({ user, chat, setCurrchatId, currchatId, connection
         if(currchatId!=chat.id){
             setUnreadedCount(prev=>prev+1)
         }
-        else{
-            console.log(chat.messages[chat.messages.length-1].id)
+        else if(chat.messages[chat.messages.length-1]!=null){
             connection.invoke('ReadLastMessage', chat.messages[chat.messages.length-1].id);
         }
         

@@ -75,7 +75,6 @@ useEffect(() => {
               });
 
               connection.on('NewChatData', res=>{
-                console.log(res)
                 setCurrchatId(res.id);   
                 setChats(prev=>{
                   return [...prev, res]
